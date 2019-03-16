@@ -16,12 +16,14 @@ var (
 	maxWidth      int
 	tabWidth      int
 	fillSpaceFlag bool
+	fillChar      string
 )
 
 func init() {
 	flag.IntVar(&maxWidth, "max", 80, "max width")
 	flag.IntVar(&tabWidth, "tab", 8, "tab width")
 	flag.BoolVar(&fillSpaceFlag, "fill_space", false, "fill space flag")
+	flag.StringVar(&fillChar, "fill_char", " ", "fill char (use ascii char)")
 }
 
 func main() {
@@ -42,9 +44,8 @@ func main() {
 		truncatedText := ansiText.TrancateString(truncatedTextLen)
 		if truncated {
 			truncatedText += tail
-		}
-		if fillSpaceFlag {
-			truncatedText += strings.Repeat(" ", maxWidth-truncatedTextLen)
+		} else if fillSpaceFlag {
+			truncatedText += strings.Repeat(fillChar, maxWidth-truncatedTextLen)
 		}
 		if cnt > 0 {
 			fmt.Println()
